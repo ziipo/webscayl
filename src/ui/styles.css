@@ -57,17 +57,21 @@ h2.brutal-heading { font-size: clamp(1.2rem, 4vw, 1.8rem); }
 .brut-card {
   background: var(--bg-alt);
   border: var(--border);
+  border-radius: var(--radius);
   box-shadow: var(--shadow-md);
   padding: 1.25rem;
 }
 
 .brut-button {
+  -webkit-appearance: none;
+  appearance: none;
   font-family: var(--font-brutal);
   font-weight: 700;
   font-size: 1rem;
   background: var(--accent);
   color: var(--accent-fg);
   border: var(--border);
+  border-radius: var(--radius);
   box-shadow: var(--shadow-md);
   padding: 0.6rem 1.2rem;
   cursor: pointer;
@@ -114,6 +118,8 @@ h2.brutal-heading { font-size: clamp(1.2rem, 4vw, 1.8rem); }
 }
 
 .brut-toggle {
+  -webkit-appearance: none;
+  appearance: none;
   font-family: var(--font-brutal);
   font-weight: 700;
   font-size: 0.85rem;
@@ -122,6 +128,7 @@ h2.brutal-heading { font-size: clamp(1.2rem, 4vw, 1.8rem); }
   background: var(--bg);
   color: var(--fg);
   border: var(--border);
+  border-radius: var(--radius);
   padding: 0.5rem 1rem;
   cursor: pointer;
   transition: transform 80ms, box-shadow 80ms;
@@ -168,6 +175,7 @@ h2.brutal-heading { font-size: clamp(1.2rem, 4vw, 1.8rem); }
   height: 20px;
   background: var(--bg);
   border: var(--border);
+  border-radius: var(--radius);
   outline: none;
   cursor: pointer;
 }
@@ -178,6 +186,7 @@ h2.brutal-heading { font-size: clamp(1.2rem, 4vw, 1.8rem); }
   height: 28px;
   background: var(--accent);
   border: var(--border);
+  border-radius: var(--radius);
   cursor: pointer;
   box-shadow: var(--shadow-sm);
 }
@@ -187,6 +196,7 @@ h2.brutal-heading { font-size: clamp(1.2rem, 4vw, 1.8rem); }
   height: 28px;
   background: var(--accent);
   border: var(--border);
+  border-radius: var(--radius);
   cursor: pointer;
   box-shadow: var(--shadow-sm);
 }
