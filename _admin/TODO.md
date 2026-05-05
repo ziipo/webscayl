@@ -25,7 +25,7 @@ Update `PROGRESS.md` whenever a phase flips state.
 - [x] Capability banners: WebGPU absent → warning; mobile UA → desktop-recommended
 
 ## Phase 4 — Model fetching & caching
-- [x] Identify upstream URLs (Hugging Face: Meeperomi/RealESRGAN_x4-onnx, deepghs/imgutils-models)
+- [x] Identify upstream URLs (Hugging Face: Xenova/realesrgan-x4plus, Xenova/realesrgan-x4plus-anime)
 - [x] Implement IndexedDB-backed `modelCache.ts` with streaming progress
 - [x] Stream fetch progress into the log
 

@@ -4,9 +4,9 @@ import type { ModelType } from "../types";
 // These are the official xinntao/Real-ESRGAN models exported to ONNX format
 const MODEL_URLS: Record<ModelType, string> = {
   general:
-    "https://huggingface.co/Meeperomi/RealESRGAN_x4-onnx/resolve/main/RealESRGAN_x4.onnx",
+    "https://huggingface.co/Xenova/realesrgan-x4plus/resolve/main/onnx/model.onnx",
   anime:
-    "https://huggingface.co/deepghs/imgutils-models/resolve/main/real_esrgan/RealESRGAN_x4plus_anime_6B.onnx",
+    "https://huggingface.co/Xenova/realesrgan-x4plus-anime/resolve/main/onnx/model.onnx",
 };
 
 const DB_NAME = "webscayl-models";

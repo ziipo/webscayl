@@ -20,7 +20,7 @@ Append-only log of phase transitions and significant decisions. Newest at top.
 - 5 neo-brutalist palettes (CONSTRUCTION, HAZARD, PUNK, MATRIX, BLUEPRINT) randomized per load — verified visually in browser.
 - Complete UI: dropzone, engine room controls, log, progress bar, before/after slider, download.
 - Complete inference pipeline: ONNX Runtime Web, WebGPU→WASM fallback, overlap-blended tiling.
-- Model source: Hugging Face (general: `Meeperomi/RealESRGAN_x4-onnx`, anime: `deepghs/imgutils-models`). Cached in IndexedDB after first fetch.
+- Model source: Hugging Face (general: `Xenova/realesrgan-x4plus`, anime: `Xenova/realesrgan-x4plus-anime`). Cached in IndexedDB after first fetch.
 - TypeScript clean, production build clean (Vite 6).
 - Remaining: Phase 7 (OOM resilience polish + README).
 
