@@ -3,7 +3,13 @@ import { createSession } from "./session";
 import { runTiledInference, imageDataFromBitmap } from "./tiler";
 import { transition, setProgress, setOutputCanvas, getStore, setError } from "../state";
 import { logLine } from "../ui/log";
-import { setProgress as uiProgress } from "../ui/progress";
+import {
+  setFetchProgress,
+  hideFetchProgress,
+  initProgressGrid,
+  setTileDone,
+  hideProgressGrid,
+} from "../ui/progress";
 import type { AppConfig } from "../types";
 
 export async function runUpscale(config: AppConfig): Promise<void> {
@@ -22,11 +28,12 @@ export async function runUpscale(config: AppConfig): Promise<void> {
         const bar = "█".repeat(bars) + "░".repeat(20 - bars);
         logLine(`FETCHING MODEL_WEIGHTS [${bar}] ${Math.round(pct * 100)}%`);
         setProgress(pct * 0.4); // model fetch = first 40%
-        uiProgress(pct * 0.4);
+        setFetchProgress(pct);
       }
     });
 
     logLine("MODEL_WEIGHTS", "OK");
+    hideFetchProgress();
 
     // ── Init session ───────────────────────────────────────────────
     transition("WARMING_UP");
@@ -37,7 +44,6 @@ export async function runUpscale(config: AppConfig): Promise<void> {
 
     logLine(`BACKEND: ${backend.toUpperCase()}`, "OK");
     setProgress(0.5);
-    uiProgress(0.5);
 
     // ── Run inference ──────────────────────────────────────────────
     transition("PROCESSING");
@@ -54,7 +60,10 @@ export async function runUpscale(config: AppConfig): Promise<void> {
         logLine(`PROCESSING TILE ${done}/${total}`);
         const pct = 0.5 + (done / total) * 0.5;
         setProgress(pct);
-        uiProgress(pct);
+        setTileDone(done - 1);
+      },
+      (cols, rows) => {
+        initProgressGrid(store.image!.bitmap, cols, rows);
       }
     );
 
@@ -68,13 +77,15 @@ export async function runUpscale(config: AppConfig): Promise<void> {
 
     setOutputCanvas(canvas);
     setProgress(1);
-    uiProgress(1);
+    hideProgressGrid();
     transition("DONE");
     logLine("DONE", "OK");
 
     session.release();
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
+    hideFetchProgress();
+    hideProgressGrid();
     const isOom =
       msg.includes("memory") ||
       msg.includes("RangeError") ||

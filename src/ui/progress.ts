@@ -1,17 +1,74 @@
-let wrap: HTMLElement | null = null;
-let fill: HTMLElement | null = null;
+let fetchWrap: HTMLElement | null = null;
+let fetchFill: HTMLElement | null = null;
 
-export function initProgress(wrapEl: HTMLElement, fillEl: HTMLElement): void {
-  wrap = wrapEl;
-  fill = fillEl;
+let progressSection: HTMLElement | null = null;
+let baseCanvas: HTMLCanvasElement | null = null;
+let gridContainer: HTMLElement | null = null;
+
+export function initProgress(
+  fWrap: HTMLElement,
+  fFill: HTMLElement,
+  pSection: HTMLElement,
+  bCanvas: HTMLCanvasElement,
+  gContainer: HTMLElement
+): void {
+  fetchWrap = fWrap;
+  fetchFill = fFill;
+  progressSection = pSection;
+  baseCanvas = bCanvas;
+  gridContainer = gContainer;
 }
 
-export function setProgress(value: number): void {
-  if (!wrap || !fill) return;
-  wrap.classList.add("visible");
-  fill.style.width = `${Math.round(value * 100)}%`;
+/** ── Model Fetch Progress ─────────────────────────────────────────── */
+
+export function setFetchProgress(value: number): void {
+  if (!fetchWrap || !fetchFill) return;
+  fetchWrap.classList.add("visible");
+  fetchFill.style.width = `${Math.round(value * 100)}%`;
 }
 
-export function hideProgress(): void {
-  wrap?.classList.remove("visible");
+export function hideFetchProgress(): void {
+  fetchWrap?.classList.remove("visible");
+}
+
+/** ── Tiled Inference Progress ─────────────────────────────────────── */
+
+export function initProgressGrid(
+  bitmap: ImageBitmap,
+  cols: number,
+  rows: number
+): void {
+  if (!progressSection || !baseCanvas || !gridContainer) return;
+
+  // 1. Setup canvas
+  baseCanvas.width = bitmap.width;
+  baseCanvas.height = bitmap.height;
+  const ctx = baseCanvas.getContext("2d");
+  ctx?.drawImage(bitmap, 0, 0);
+
+  // 2. Setup grid
+  gridContainer.innerHTML = "";
+  gridContainer.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+  gridContainer.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+
+  for (let i = 0; i < cols * rows; i++) {
+    const cell = document.createElement("div");
+    cell.className = "progress-blur-cell";
+    gridContainer.appendChild(cell);
+  }
+
+  // 3. Show section
+  progressSection.classList.add("visible");
+}
+
+export function setTileDone(index: number): void {
+  if (!gridContainer) return;
+  const cells = gridContainer.querySelectorAll(".progress-blur-cell");
+  if (cells[index]) {
+    cells[index].classList.add("done");
+  }
+}
+
+export function hideProgressGrid(): void {
+  progressSection?.classList.remove("visible");
 }

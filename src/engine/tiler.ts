@@ -6,7 +6,8 @@ export async function runTiledInference(
   session: OrtSession,
   tileSize: number,
   scale: number,
-  onTile: (done: number, total: number) => void
+  onTile: (done: number, total: number) => void,
+  onGridInit?: (cols: number, rows: number) => void
 ): Promise<ImageData> {
   const { width, height, data: pixels } = imageData;
   const overlap = 16;
@@ -16,6 +17,8 @@ export async function runTiledInference(
   const rows = Math.ceil(height / step);
   const total = cols * rows;
   let done = 0;
+
+  if (onGridInit) onGridInit(cols, rows);
 
   const outW = width * scale;
   const outH = height * scale;

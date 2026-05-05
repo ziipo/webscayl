@@ -3,7 +3,7 @@ import { applyRandomPalette } from "./ui/palettes";
 import { initDropzone } from "./ui/dropzone";
 import { initControls } from "./ui/controls";
 import { initLog, clearLog } from "./ui/log";
-import { initProgress, setProgress as uiProgress, hideProgress } from "./ui/progress";
+import { initProgress, hideFetchProgress, hideProgressGrid } from "./ui/progress";
 import { initCompare, populateCompare } from "./ui/compare";
 import { detectCapabilities } from "./engine/capabilities";
 import { runUpscale } from "./engine/upscale";
@@ -40,7 +40,10 @@ async function main(): Promise<void> {
   // Wire up progress
   initProgress(
     document.getElementById("progress-bar-wrap")!,
-    document.getElementById("progress-bar-fill")!
+    document.getElementById("progress-bar-fill")!,
+    document.getElementById("progress-section")!,
+    document.getElementById("progress-base-canvas")! as HTMLCanvasElement,
+    document.getElementById("progress-grid")!
   );
 
   // Wire up dropzone
@@ -71,7 +74,8 @@ async function main(): Promise<void> {
     const store = getStore();
     if (!store.image) return;
     clearLog();
-    hideProgress();
+    hideFetchProgress();
+    hideProgressGrid();
     document.getElementById("output-section")!.classList.remove("visible");
     await runUpscale(store.config);
   });
@@ -114,13 +118,6 @@ async function main(): Promise<void> {
     // Download button
     downloadBtn.disabled = store.state !== "DONE";
     document.getElementById("output-section")!.classList.toggle("visible", store.state === "DONE");
-
-    // Progress bar
-    if (store.state === "FETCHING_MODEL" || store.state === "PROCESSING" || store.state === "WARMING_UP") {
-      uiProgress(store.progress);
-    } else if (store.state === "DONE") {
-      uiProgress(1);
-    }
 
     // Error banner
     if (store.state === "ERROR" && store.error) {

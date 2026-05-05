@@ -364,7 +364,7 @@ h2.brutal-heading { font-size: clamp(1.2rem, 4vw, 1.8rem); }
   border: var(--border);
 }
 
-/* ── Progress bar ──────────────────────────────────────────────────── */
+/* ── Progress bar (Model Fetch) ─────────────────────────────────────── */
 #progress-bar-wrap {
   height: 24px;
   border: var(--border);
@@ -384,16 +384,49 @@ h2.brutal-heading { font-size: clamp(1.2rem, 4vw, 1.8rem); }
   transition: width 100ms linear;
 }
 
-/* ── Action bar ────────────────────────────────────────────────────── */
-#action-bar {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  border-top: var(--border);
-  padding-top: var(--gap);
+/* ── Tiled Progress Overlay (Inference) ────────────────────────────── */
+#progress-section {
+  display: none;
 }
 
-/* ── Compare slider ────────────────────────────────────────────────── */
+#progress-section.visible {
+  display: block;
+}
+
+.progress-overlay-wrap {
+  position: relative;
+  overflow: hidden;
+  border: var(--border);
+  box-shadow: var(--shadow-lg);
+  background: var(--fg);
+}
+
+#progress-base-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0.8;
+}
+
+#progress-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  z-index: 10;
+}
+
+.progress-blur-cell {
+  backdrop-filter: blur(20px);
+  background: rgba(0, 0, 0, 0.2);
+  transition: backdrop-filter 0.4s ease, background 0.4s ease;
+}
+
+.progress-blur-cell.done {
+  backdrop-filter: blur(0px);
+  background: transparent;
+}
+
+/* ── Log ───────────────────────────────────────────────────────────── */
 #output-section {
   display: none;
 }

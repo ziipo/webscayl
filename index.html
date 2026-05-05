@@ -90,10 +90,18 @@
         </button>
       </div>
 
-      <!-- Progress bar -->
+      <!-- Progress bar (Model Fetch) -->
       <div id="progress-bar-wrap">
         <div id="progress-bar-fill"></div>
       </div>
+
+      <!-- Tiled Progress Overlay (Inference) -->
+      <section id="progress-section">
+        <div class="progress-overlay-wrap" id="progress-overlay-wrap">
+          <canvas id="progress-base-canvas"></canvas>
+          <div id="progress-grid"></div>
+        </div>
+      </section>
 
       <!-- Log -->
       <section id="log-section">
