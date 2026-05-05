@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Client-side AI image upscaling using Real-ESRGAN. No uploads. No servers. Pure browser." />
+    <title>WEBSCAYL</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⬆</text></svg>" />
+  </head>
+  <body>
+    <div id="app">
+
+      <!-- Header -->
+      <header id="header">
+        <h1 class="brutal-heading">WEBSCAYL</h1>
+        <span class="palette-tag" id="palette-tag">PALETTE: —</span>
+      </header>
+
+      <!-- Capability banners -->
+      <div id="banners"></div>
+
+      <!-- Error card -->
+      <div id="error-card" class="brut-banner brut-banner--error" style="display:none">
+        ✕ <span id="error-msg"></span>
+      </div>
+
+      <!-- Drop zone -->
+      <section>
+        <div id="dropzone">
+          <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" style="display:none" />
+          <span class="drop-label">DROP IMAGE HERE</span>
+          <span class="drop-sub">OR CLICK TO BROWSE · JPG · PNG · WEBP · MAX 1024×1024</span>
+        </div>
+      </section>
+
+      <!-- Engine Room -->
+      <section class="brut-card">
+        <h2 class="brutal-heading" style="margin-bottom:1rem">ENGINE ROOM</h2>
+        <div id="engine-room">
+
+          <!-- Model -->
+          <div class="engine-block">
+            <div class="engine-block-title">MODEL</div>
+            <div class="brut-toggle-group">
+              <button class="brut-toggle" data-control="model" data-value="general">GENERAL</button>
+              <button class="brut-toggle" data-control="model" data-value="anime">ANIME</button>
+            </div>
+          </div>
+
+          <!-- Scale -->
+          <div class="engine-block">
+            <div class="engine-block-title">MULTIPLIER</div>
+            <div class="brut-toggle-group">
+              <button class="brut-toggle" data-control="scale" data-value="2">2×</button>
+              <button class="brut-toggle" data-control="scale" data-value="4">
+                4× <span class="heavy-tag">HEAVY</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Tile size -->
+          <div class="engine-block">
+            <div class="engine-block-title">TILE SIZE</div>
+            <div class="brut-slider-wrap">
+              <div class="brut-slider-label">
+                <span>64</span>
+                <span id="tile-value">128</span>
+                <span>256</span>
+              </div>
+              <input
+                type="range"
+                id="tile-slider"
+                class="brut-slider"
+                min="64" max="256" step="32" value="128"
+              />
+            </div>
+            <p class="tooltip">SMALLER = SLOWER BUT SAFER · LARGER = FASTER BUT NEEDS BEEFY GPU</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Action bar -->
+      <div id="action-bar">
+        <button class="brut-button brut-button--large" id="btn-upscale" disabled>
+          UPSCALE
+        </button>
+        <button class="brut-button brut-button--large brut-button--ghost" id="btn-download" disabled>
+          DOWNLOAD
+        </button>
+      </div>
+
+      <!-- Progress bar -->
+      <div id="progress-bar-wrap">
+        <div id="progress-bar-fill"></div>
+      </div>
+
+      <!-- Log -->
+      <section id="log-section">
+        <div id="log-output"></div>
+      </section>
+
+      <!-- Output: before/after compare -->
+      <section id="output-section">
+        <div class="compare-wrap" id="compare-wrap">
+          <canvas id="canvas-before"></canvas>
+          <canvas id="canvas-after" class="compare-canvas-after"></canvas>
+          <div class="compare-divider" id="compare-divider"></div>
+          <div class="compare-handle" id="compare-handle">&lt; &gt;</div>
+          <span class="compare-label compare-label--before">BEFORE</span>
+          <span class="compare-label compare-label--after">AFTER</span>
+        </div>
+      </section>
+
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
