@@ -5,6 +5,8 @@ let progressSection: HTMLElement | null = null;
 let baseCanvas: HTMLCanvasElement | null = null;
 let gridContainer: HTMLElement | null = null;
 
+let shuffledIndices: number[] = [];
+
 export function initProgress(
   fWrap: HTMLElement,
   fFill: HTMLElement,
@@ -51,18 +53,27 @@ export function initProgressGrid(
   gridContainer.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
   gridContainer.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
 
-  for (let i = 0; i < cols * rows; i++) {
+  const total = cols * rows;
+  for (let i = 0; i < total; i++) {
     const cell = document.createElement("div");
     cell.className = "progress-blur-cell";
     gridContainer.appendChild(cell);
   }
 
-  // 3. Show section
+  // 3. Generate randomized reveal order
+  shuffledIndices = Array.from({ length: total }, (_, i) => i);
+  for (let i = shuffledIndices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledIndices[i], shuffledIndices[j]] = [shuffledIndices[j], shuffledIndices[i]];
+  }
+
+  // 4. Show section
   progressSection.classList.add("visible");
 }
 
-export function setTileDone(index: number): void {
-  if (!gridContainer) return;
+export function setTileDone(): void {
+  if (!gridContainer || shuffledIndices.length === 0) return;
+  const index = shuffledIndices.pop()!;
   const cells = gridContainer.querySelectorAll(".progress-blur-cell");
   if (cells[index]) {
     cells[index].classList.add("done");

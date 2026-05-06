@@ -60,7 +60,7 @@ export async function runUpscale(config: AppConfig): Promise<void> {
         logLine(`PROCESSING TILE ${done}/${total}`);
         const pct = 0.5 + (done / total) * 0.5;
         setProgress(pct);
-        setTileDone(done - 1);
+        setTileDone();
       },
       (cols, rows) => {
         initProgressGrid(store.image!.bitmap, cols, rows);
