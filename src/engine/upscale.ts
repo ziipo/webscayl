@@ -23,7 +23,7 @@ export async function runUpscale(config: AppConfig): Promise<void> {
 
     const modelBuffer = await fetchModel(config.model, (loaded, total) => {
       if (total > 0) {
-        const pct = loaded / total;
+        const pct = Math.min(1, loaded / total);
         const bars = Math.round(pct * 20);
         const bar = "█".repeat(bars) + "░".repeat(20 - bars);
         logLine(`FETCHING MODEL_WEIGHTS [${bar}] ${Math.round(pct * 100)}%`);
