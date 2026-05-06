@@ -58,7 +58,11 @@ export async function runTiledInference(
       const outputName = session.session.outputNames[0];
       const outTensor = results[outputName];
       const outData = outTensor.data as Float32Array;
+      const dims = outTensor.dims;
 
+      // Handle both NCHW [1, 3, H, W] and NHWC [1, H, W, 3] layouts
+      const isNHWC = dims[3] === 3;
+      
       const oTW = tW * scale;
       const oTH = tH * scale;
       const oSrcX = srcX * scale;
@@ -73,9 +77,18 @@ export async function runTiledInference(
           const oi = (oSrcY + y) * outW + (oSrcX + x);
           const ti = y * oTW + x;
           const w = weightMap[ti];
-          outR[oi] += outData[ti] * w;
-          outG[oi] += outData[oTW * oTH + ti] * w;
-          outB[oi] += outData[2 * oTW * oTH + ti] * w;
+          
+          if (isNHWC) {
+            // NHWC: Interleaved [R, G, B, R, G, B...]
+            outR[oi] += outData[ti * 3] * w;
+            outG[oi] += outData[ti * 3 + 1] * w;
+            outB[oi] += outData[ti * 3 + 2] * w;
+          } else {
+            // NCHW: Planar [RRR..., GGG..., BBB...]
+            outR[oi] += outData[ti] * w;
+            outG[oi] += outData[oTW * oTH + ti] * w;
+            outB[oi] += outData[2 * oTW * oTH + ti] * w;
+          }
           outWeights[oi] += w;
         }
       }
