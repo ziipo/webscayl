@@ -1,12 +1,11 @@
 import type { ModelType } from "../types";
 
-// Publicly available Real-ESRGAN ONNX models via Hugging Face
-// These are the official xinntao/Real-ESRGAN models exported to ONNX format
+// Bundled Real-ESRGAN ONNX models served directly from our GitHub Pages site
 const MODEL_URLS: Record<ModelType, string> = {
   general:
-    "https://github.com/ziipo/webscayl/releases/download/v1.0.0-models/general_model.onnx",
+    ((import.meta as any).env?.BASE_URL || "/webscayl/") + "models/general_model.onnx",
   anime:
-    "https://github.com/ziipo/webscayl/releases/download/v1.0.0-models/anime_model.onnx",
+    ((import.meta as any).env?.BASE_URL || "/webscayl/") + "models/anime_model.onnx",
 };
 
 const DB_NAME = "webscayl-models";
