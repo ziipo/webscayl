@@ -1,5 +1,5 @@
 import "./ui/styles.css";
-import { applyRandomPalette } from "./ui/palettes";
+import { applyRandomPalette, applyNextPalette } from "./ui/palettes";
 import { initDropzone } from "./ui/dropzone";
 import { initControls } from "./ui/controls";
 import { initLog, clearLog } from "./ui/log";
@@ -13,7 +13,13 @@ async function main(): Promise<void> {
   // Apply random palette
   const paletteName = applyRandomPalette();
   const paletteTag = document.getElementById("palette-tag");
-  if (paletteTag) paletteTag.textContent = `PALETTE: ${paletteName}`;
+  if (paletteTag) {
+    paletteTag.innerHTML = `PALETTE: ${paletteName} <span class="palette-refresh">↻</span>`;
+    paletteTag.addEventListener("click", () => {
+      const newPalette = applyNextPalette();
+      paletteTag.innerHTML = `PALETTE: ${newPalette} <span class="palette-refresh">↻</span>`;
+    });
+  }
 
   // Detect capabilities & show banners
   const caps = await detectCapabilities();

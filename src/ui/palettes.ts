@@ -50,8 +50,23 @@ const PALETTES: Palette[] = [
   },
 ];
 
+let currentPaletteIndex = -1;
+
 export function applyRandomPalette(): string {
-  const palette = PALETTES[Math.floor(Math.random() * PALETTES.length)];
+  currentPaletteIndex = Math.floor(Math.random() * PALETTES.length);
+  return applyPalette(currentPaletteIndex);
+}
+
+export function applyNextPalette(): string {
+  if (currentPaletteIndex === -1) {
+    return applyRandomPalette();
+  }
+  currentPaletteIndex = (currentPaletteIndex + 1) % PALETTES.length;
+  return applyPalette(currentPaletteIndex);
+}
+
+function applyPalette(index: number): string {
+  const palette = PALETTES[index];
   const root = document.documentElement;
   root.style.setProperty("--bg", palette.bg);
   root.style.setProperty("--bg-alt", palette.bgAlt);
